@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer">
+
+<meta property="og:title" content="VidStream Pro">
+<meta property="og:description" content="Streaming video viral terbaru.">
+<meta property="og:image" content="https://cdn.videy.co/DEFAULT_THUMB.jpg"> 
+<meta property="og:type" content="website">
+
+<title>VidStream Pro</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+/* --- CSS RESET --- */
+:root { --bg-main: #060b14; --bg-card: #131b2e; --accent: #2563eb; --text-main: #ffffff; --text-muted: #94a3b8; --border: #1e293b; }
+body { margin: 0; background-color: var(--bg-main); color: var(--text-main); font-family: 'Inter', sans-serif; overflow-x: hidden; }
+a { text-decoration: none; color: inherit; }
+*{ box-sizing: border-box; }
+
+/* LAYOUT */
+.container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+.navbar { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; border-bottom: 1px solid var(--border); }
+.brand { font-weight: 800; font-size: 20px; color: #fff; display: flex; align-items: center; gap: 8px; }
+.brand span { color: var(--accent); }
+
+/* HERO */
+.hero { padding: 30px 0; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
+.hero h1 { font-size: 28px; font-weight: 800; margin: 0 0 10px 0; }
+.hero p { color: var(--text-muted); margin: 0; font-size: 14px; }
+
+/* GRID */
+.gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; padding-bottom: 50px; }
+@media(min-width: 768px){ .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); } }
+
+/* CARD */
+.vid-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; transition: transform 0.2s; display: flex; flex-direction: column; cursor: pointer; position: relative; }
+.vid-card:hover { transform: translateY(-5px); border-color: var(--accent); }
+
+.thumb-area { width: 100%; aspect-ratio: 16/9; background-color: #000; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+.thumb-bg { position: absolute; inset: 0; background-position: center; background-size: cover; background-repeat: no-repeat; z-index: 1; }
+.thumb-vid { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 2; }
+.overlay-shadow { content: ''; position: absolute; inset: 0; background: rgba(0,0,0,0.2); z-index: 5; pointer-events: none; }
+.play-icon { width: 40px; height: 40px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px); z-index: 10; border: 1px solid rgba(255,255,255,0.3); pointer-events: none; }
+
+.card-info { padding: 10px; background: var(--bg-card); z-index: 20; }
+.vid-title { font-size: 13px; font-weight: 600; margin: 0; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.badge { font-size: 10px; background: #1e3a8a; color: #93c5fd; padding: 2px 6px; border-radius: 4px; display: inline-block; margin-bottom: 5px; font-weight: bold; }
+
+/* PLAYER */
+#playerPage { display: none; margin-top: 20px; }
+.playerShell { width: 100%; aspect-ratio: 16/9; background: #000; position: relative; border-radius: 12px; overflow: hidden; border: 1px solid var(--border); box-shadow: 0 10px 40px rgba(0,0,0,0.5); transition: aspect-ratio 0.3s ease, max-width 0.3s ease; margin: 0 auto; }
+.playerShell.vertical { aspect-ratio: 9/16; max-width: 100%; }
+@media (min-width: 768px) { .playerShell.vertical { max-width: 400px; } }
+
+video, iframe { width: 100%; height: 100%; position: absolute; inset: 0; border: 0; }
+.back-btn { cursor: pointer; color: var(--accent); margin-bottom: 15px; display: inline-block; font-weight: 600; }
+
+/* ADS & FOOTER */
+.ad-native-wrapper { margin: 30px 0; border: 1px dashed #333; padding: 10px; border-radius: 8px; text-align: center; min-height: 100px; display:flex; align-items:center; justify-content:center; background: #0a0f1c;}
+.footer { margin-top: 50px; padding: 20px; border-top: 1px solid var(--border); text-align: center; color: #555; font-size: 12px; }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="navbar">
+    <div class="brand">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="#2563eb"><rect width="24" height="24" rx="6"/></svg>
+      VidStream<span>Pro</span>
+    </div>
+    <div style="font-size:12px; color:#aaa; cursor:pointer;" onclick="location.reload()">Refresh</div>
+  </div>
+
+  <div id="galleryPage">
+    <div class="hero">
+      <h1>Trending Videos</h1>
+      <p>Koleksi video viral terbaru update harian.</p>
+    </div>
+    <div id="statusMsg" style="padding: 20px; text-align: center; color: #aaa; margin-bottom: 20px; border: 1px dashed #333;">Sedang memuat daftar video...</div>
+    <div class="gallery-grid" id="gridTarget"></div>
+  </div>
+
+  <div id="playerPage">
+    <div class="back-btn" onclick="window.location.href=window.location.pathname">← Kembali</div>
+    <div id="shell" class="playerShell">
+      <video id="vid" controls playsinline></video>
+      <iframe id="frame" allow="autoplay; fullscreen" allowfullscreen></iframe>
+    </div>
+    <h2 id="vidTitle" style="margin-top:15px; font-size:18px;">Now Playing</h2>
+    <button id="dlBtn" style="background:var(--accent); color:white; border:none; padding:12px 20px; border-radius:8px; margin-top:10px; cursor:pointer; font-weight:bold; width:100%; font-size:16px;">Download Full Video HD</button>
+    
+    <div class="ad-native-wrapper">
+       <div id="container-54f40a4ce292a9187e0b9a0feb507f92"></div>
+    </div>
+    <div id="histats-box" style="margin-top:20px; opacity:0.6; text-align:center;"></div>
+  </div>
+
+  <div class="footer">&copy; 2024 VidStream Pro. All rights reserved.</div>
+</div>
+
+<script>
+const SMARTLINK = "https://harbourbreederdump.com/an29v43y4m?key=549781a632ef3b8389ad01c914a1ee3a";
+const q = new URLSearchParams(location.search);
+const vidId = q.get('id'); // Ini bisa berupa ID pendek, ID DM, atau Link HTTP
+
+const statusMsg = document.getElementById('statusMsg');
+const galleryPage = document.getElementById('galleryPage');
+const playerPage = document.getElementById('playerPage');
+const shell = document.getElementById('shell');
+const vid = document.getElementById('vid');
+const frame = document.getElementById('frame');
+const vidTitle = document.getElementById('vidTitle');
+
+// --- ROUTING ---
+if(vidId) {
+  galleryPage.style.display = 'none';
+  playerPage.style.display = 'block';
+  initPlayer();   
+  injectAds();    
+} else {
+  loadVideos();   
+}
+
+// --- ADS & ANALYTICS ---
+function injectAds() {
+    try {
+        const popScript = document.createElement('script');
+        popScript.src = '//harbourbreederdump.com/2e/a1/21/2ea12153a74996b501c2507cb4eebc96.js';
+        document.body.appendChild(popScript);
+
+        const natScript = document.createElement('script');
+        natScript.src = '//harbourbreederdump.com/54f40a4ce292a9187e0b9a0feb507f92/invoke.js';
+        natScript.async = true;
+        natScript.setAttribute('data-cfasync', 'false');
+        document.body.appendChild(natScript);
+
+        const histatsDiv = document.getElementById('histats-box');
+        if(histatsDiv) {
+            const hsScript = document.createElement('script');
+            hsScript.type = 'text/javascript';
+            hsScript.async = true;
+            hsScript.text = `var _Hasync= _Hasync|| []; _Hasync.push(['Histats.start', '1,4654540,4,0,0,0,00010000']); _Hasync.push(['Histats.fasi', '1']); _Hasync.push(['Histats.track_hits', '']); (function() { var hs = document.createElement('script'); hs.type = 'text/javascript'; hs.async = true; hs.src = ('//s10.histats.com/js15_as.js'); (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(hs); })();`;
+            document.body.appendChild(hsScript);
+        }
+    } catch(e) {}
+}
+
+// --- LOAD VIDEOS ---
+async function loadVideos() {
+  const target = document.getElementById('gridTarget');
+  try {
+    const res = await fetch('videos.txt?t=' + Date.now());
+    if(!res.ok) throw new Error("Gagal membaca videos.txt");
+    const text = await res.text();
+
+    if(text.trim().startsWith("<")) throw new Error("File videos.txt 404.");
+
+    const lines = text.split('\n');
+    let html = '';
+    let found = 0;
+
+    lines.forEach(line => {
+      if(line.trim().length < 3) return;
+      
+      // Ambil ID dan Judul
+      const parts = line.split('|');
+      // EncodeURIComponent dipakai agar link aneh2 tetap aman saat diklik
+      const rawId = parts[0].trim();
+      const safeId = encodeURIComponent(rawId);
+      const title = parts[1] ? parts[1].trim() : 'Video Tanpa Judul';
+      
+      let badge = "VIDEY";
+      let thumbHTML = "";
+
+      // 1. CEK APAKAH LINK HTTP (Video luar)
+      if(rawId.startsWith('http')) {
+          badge = "WEB";
+          // Cek apakah itu file MP4 langsung?
+          if(rawId.includes('.mp4')) {
+              badge = "MP4";
+              // Coba preview pake video tag
+              thumbHTML = `<video src="${rawId}#t=0.1" preload="metadata" muted playsinline class="thumb-vid"></video>`;
+          } else {
+              // Kalau link Embed/Youtube/Lainnya, kita pakai gambar default
+              // Anda bisa ganti URL gambar ini dengan logo website Anda
+              thumbHTML = `<div class="thumb-bg" style="background-image: url('https://cdn.videy.co/DEFAULT_THUMB.jpg'); background-size: contain; background-color: #000;"></div>`;
+          }
+      } 
+      // 2. CEK APAKAH DAILYMOTION (Panjang)
+      else if(rawId.length > 9 || rawId.startsWith('k')) {
+         badge = "DM";
+         thumbHTML = `<div class="thumb-bg" style="background-image: url('https://www.dailymotion.com/thumbnail/video/${rawId}');"></div>`;
+      } 
+      // 3. VIDEEY (Pendek)
+      else {
+         badge = "VIDEY";
+         thumbHTML = `<video src="https://cdn.videy.co/${rawId}.mp4#t=0.1" preload="metadata" muted playsinline class="thumb-vid"></video>`;
+      }
+
+      html += `
+        <a href="?id=${safeId}" class="vid-card">
+          <div class="thumb-area">
+            ${thumbHTML}
+            <div class="overlay-shadow"></div>
+            <div class="play-icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+          </div>
+          <div class="card-info">
+            <span class="badge">${badge}</span>
+            <p class="vid-title">${title}</p>
+          </div>
+        </a>
+      `;
+      found++;
+    });
+
+    if(found > 0) {
+      target.innerHTML = html;
+      statusMsg.style.display = 'none';
+    } else {
+      statusMsg.textContent = "Daftar video kosong.";
+    }
+  } catch (err) {
+    statusMsg.innerHTML = "Error loading list.";
+  }
+}
+
+// --- PLAYER INIT ---
+function initPlayer() {
+  document.getElementById('dlBtn').onclick = function() { window.open(SMARTLINK, '_blank'); };
+  
+  // Decode dulu ID nya karena tadi di-encode di URL
+  const realId = decodeURIComponent(vidId);
+
+  // 1. JIKA LINK EKSTERNAL (HTTP/HTTPS)
+  if(realId.startsWith('http')) {
+      vidTitle.textContent = "External Video";
+      
+      // Jika Link MP4 Langsung
+      if(realId.includes('.mp4')) {
+          vid.src = realId;
+          frame.style.display = 'none';
+          vid.load();
+          vid.muted = true; 
+          vid.play().catch(e=>{});
+          // Deteksi rasio
+          vid.onloadedmetadata = function() {
+            if(this.videoHeight > this.videoWidth) shell.classList.add('vertical');
+            else shell.classList.remove('vertical');
+          };
+      } 
+      // Jika Link Embed (Youtube, Streamtape, Dood, dll)
+      else {
+          frame.src = realId;
+          vid.style.display = 'none';
+          shell.classList.remove('vertical'); // Default Landscape buat embed
+      }
+  }
+  // 2. JIKA DAILYMOTION
+  else if(realId.length > 9 || realId.startsWith('k')) {
+       adjustDmSize(realId);
+       frame.src = `https://www.dailymotion.com/embed/video/${realId}?autoplay=1&mute=1&queue-enable=false`;
+       vid.style.display = 'none';
+  }
+  // 3. JIKA VIDEY
+  else {
+       const url = `https://cdn.videy.co/${realId}.mp4`;
+       vid.src = url;
+       frame.style.display = 'none';
+       vid.load();
+       vid.muted = true; 
+       vid.play().catch(e=>{});
+       vid.onloadedmetadata = function() {
+         if(this.videoHeight > this.videoWidth) shell.classList.add('vertical');
+         else shell.classList.remove('vertical');
+       };
+  }
+}
+
+// Helper DM Size
+async function adjustDmSize(id) {
+    try {
+        const dmUrl = `https://www.dailymotion.com/services/oembed?url=https://www.dailymotion.com/video/${id}`;
+        const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(dmUrl)}`;
+        const res = await fetch(proxyUrl);
+        const data = await res.json();
+        if(data.contents) {
+            const realData = JSON.parse(data.contents);
+            if(realData.height > realData.width) shell.classList.add('vertical');
+            else shell.classList.remove('vertical');
+            if(realData.title) vidTitle.textContent = realData.title;
+        }
+    } catch(e) {}
+}
+</script>
+
+</body>
+</html>
