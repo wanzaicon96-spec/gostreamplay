@@ -1,415 +1,299 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Drachin - Universal Stream</title>
-    <meta name="theme-color" content="#0f0f0f">
-    <meta name="description" content="Watch Movies, Drama, and Viral Videos in one place.">
-    
-    <link rel="manifest" href="/manifest.json">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    
-    <script type="text/javascript" src="https://cadencebenefit.com/ce/19/77/ce197791a9e8a3c7e86814a075fd321d.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer">
 
-    <script>
-        document.addEventListener('contextmenu', event => event.preventDefault()); // Anti Klik Kanan
-        document.onkeydown = function(e) {
-            if (e.keyCode == 123) return false; // F12
-            if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false; // Inspect
-            if (e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) return false; // Inspect
-            if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) return false; // Console
-            if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false; // View Source
-            if (e.ctrlKey && e.keyCode == 'S'.charCodeAt(0)) return false; // Save Page
-        }
-    </script>
+<meta property="og:title" content="GoStream Pro">
+<meta property="og:description" content="Stream latest viral videos.">
+<meta property="og:image" content="https://cdn.videy.co/DEFAULT_THUMB.jpg"> 
+<meta property="og:type" content="website">
 
-    <style>
-        /* === TEMA DARK MODE PREMIUM === */
-        :root { --bg: #0f0f0f; --surface: #1e1e1e; --text: #fff; --red: #e50914; --gold: #ffd700; }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        
-        /* MENCEGAH SELECT TEXT */
-        body { 
-            font-family: 'Roboto', sans-serif; 
-            background-color: var(--bg); 
-            color: var(--text); 
-            overflow-x: hidden;
-            -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
-        }
-        a { text-decoration: none; color: inherit; transition: 0.2s; }
+<title>GoStream Play</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+/* --- CSS RESET --- */
+:root { --bg-main: #060b14; --bg-card: #131b2e; --accent: #2563eb; --text-main: #ffffff; --text-muted: #94a3b8; --border: #1e293b; }
+body { margin: 0; background-color: var(--bg-main); color: var(--text-main); font-family: 'Inter', sans-serif; overflow-x: hidden; }
+a { text-decoration: none; color: inherit; }
+*{ box-sizing: border-box; }
 
-        /* NAVBAR (Glass Effect) */
-        .navbar { 
-            display: flex; align-items: center; justify-content: space-between; 
-            padding: 0 20px; height: 65px; 
-            background: rgba(15,15,15,0.85); 
-            backdrop-filter: blur(10px);
-            position: sticky; top: 0; z-index: 100; 
-            border-bottom: 1px solid rgba(255,255,255,0.1); 
-        }
-        .logo { font-size: 22px; font-weight: 800; display: flex; align-items: center; gap: 6px; letter-spacing: -0.5px; }
-        .logo span { color: var(--red); font-size: 26px; }
-        
-        /* TOMBOL INSTALL APP */
-        .btn-vip { 
-            background: linear-gradient(45deg, var(--red), #b20710); 
-            padding: 10px 20px; border-radius: 30px; 
-            font-size: 13px; font-weight: 800; text-transform: uppercase; 
-            cursor: pointer; border: none; color: white; 
-            box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4); 
-            display: flex; align-items: center; gap: 6px;
-            animation: pulse-btn 2s infinite;
-        }
-        .btn-vip:hover { transform: scale(1.05); box-shadow: 0 6px 20px rgba(229, 9, 20, 0.6); }
-        @keyframes pulse-btn {
-            0% { box-shadow: 0 0 0 0 rgba(229, 9, 20, 0.7); }
-            70% { box-shadow: 0 0 0 10px rgba(229, 9, 20, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(229, 9, 20, 0); }
-        }
+/* LAYOUT */
+.container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+.navbar { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; border-bottom: 1px solid var(--border); }
+.brand { font-weight: 800; font-size: 20px; color: #fff; display: flex; align-items: center; gap: 8px; }
+.brand span { color: var(--accent); }
 
-        /* CONTAINER */
-        .wrapper { max-width: 1000px; margin: 0 auto; min-height: 90vh; padding-bottom: 40px; }
+/* HERO */
+.hero { padding: 30px 0; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
+.hero h1 { font-size: 28px; font-weight: 800; margin: 0 0 10px 0; }
+.hero p { color: var(--text-muted); margin: 0; font-size: 14px; }
 
-        /* SEARCH BAR */
-        .search-container { padding: 20px 15px; display: flex; gap: 10px; }
-        .search-input { 
-            width: 100%; background: #222; border: 1px solid #333; 
-            padding: 14px 20px; border-radius: 50px; color: #fff; 
-            outline: none; font-size: 15px; transition: 0.3s;
-        }
-        .search-input:focus { border-color: var(--red); background: #2a2a2a; }
-        .search-btn { 
-            background: #333; border: 1px solid #444; color: #fff; 
-            padding: 0 24px; border-radius: 50px; cursor: pointer; font-weight: bold; 
-        }
+/* GRID */
+.gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; padding-bottom: 50px; }
+@media(min-width: 768px){ .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); } }
 
-        /* PLAYER VIDEO */
-        #playerView { display: none; }
-        .player-box { position: relative; width: 100%; background: #000; margin: 0 auto; transition: aspect-ratio 0.3s ease; border-radius: 0 0 12px 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .mode-vertical { aspect-ratio: 9/16; max-height: 80vh; width: 100%; max-width: 450px; } 
-        .mode-landscape { aspect-ratio: 16/9; max-width: 100%; }
-        .player-box iframe, .player-box video { width: 100%; height: 100%; border: 0; display: block; position: absolute; top:0; left:0; object-fit: contain; }
+/* CARD */
+.vid-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; transition: transform 0.2s; display: flex; flex-direction: column; cursor: pointer; position: relative; }
+.vid-card:hover { transform: translateY(-5px); border-color: var(--accent); }
 
-        /* OVERLAY PLAYER */
-        #overlayLayer { position: absolute; inset: 0; z-index: 20; background: #000; background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; cursor: pointer; }
-        #overlayBackdrop { position: absolute; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); }
-        .play-btn-fake { 
-            position: relative; z-index: 21; width: 80px; height: 80px; 
-            background: rgba(229, 9, 20, 0.95); border-radius: 50%; 
-            display: flex; align-items: center; justify-content: center; 
-            cursor: pointer; box-shadow: 0 0 30px rgba(229, 9, 20, 0.5); 
-            transition: transform 0.2s;
-        }
-        .play-btn-fake:hover { transform: scale(1.1); }
-        .play-btn-fake::after { content: '▶'; font-size: 34px; color: white; margin-left: 5px; }
+.thumb-area { width: 100%; aspect-ratio: 16/9; background-color: #000; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+.thumb-bg { position: absolute; inset: 0; background-position: center; background-size: cover; background-repeat: no-repeat; z-index: 1; }
+.thumb-vid { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 2; }
+.overlay-shadow { content: ''; position: absolute; inset: 0; background: rgba(0,0,0,0.2); z-index: 5; pointer-events: none; }
+.play-icon { width: 40px; height: 40px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px); z-index: 10; border: 1px solid rgba(255,255,255,0.3); pointer-events: none; }
 
-        /* ADS AREA */
-        .info-area { padding: 20px 15px; }
-        .main-title { font-size: 20px; font-weight: 700; line-height: 1.4; margin-bottom: 20px; color: #fff; }
-        
-        .native-ad { 
-            background: #151515; border: 1px solid #252525; border-radius: 12px; 
-            padding: 15px; margin: 25px 0; min-height: 250px; 
-            display: flex; flex-direction: column; align-items: center; justify-content: center; 
-            width: 100%; overflow: hidden; 
-        }
-        
-        .dl-btn { 
-            display: block; width: 100%; background: #fff; color: #000; 
-            text-align: center; padding: 16px; border-radius: 12px; 
-            font-weight: 800; font-size: 16px; cursor: pointer; border: none; 
-            margin-bottom: 15px; text-transform: uppercase; 
-            box-shadow: 0 4px 15px rgba(255,255,255,0.1); transition: 0.2s;
-        }
-        .dl-btn:hover { background: #f0f0f0; transform: translateY(-2px); }
+.card-info { padding: 10px; background: var(--bg-card); z-index: 20; }
+.vid-title { font-size: 13px; font-weight: 600; margin: 0; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.badge { font-size: 10px; background: #1e3a8a; color: #93c5fd; padding: 2px 6px; border-radius: 4px; display: inline-block; margin-bottom: 5px; font-weight: bold; }
 
-        /* GRID */
-        #homeView { display: block; padding: 0 15px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 12px; row-gap: 24px; }
-        @media(min-width: 600px) { .grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 18px; } }
+/* PLAYER */
+#playerPage { display: none; margin-top: 20px; }
+.playerShell { width: 100%; aspect-ratio: 16/9; background: #000; position: relative; border-radius: 12px; overflow: hidden; border: 1px solid var(--border); box-shadow: 0 10px 40px rgba(0,0,0,0.5); transition: aspect-ratio 0.3s ease, max-width 0.3s ease; margin: 0 auto; }
+.playerShell.vertical { aspect-ratio: 9/16; max-width: 100%; }
+@media (min-width: 768px) { .playerShell.vertical { max-width: 400px; } }
 
-        .card { display: flex; flex-direction: column; cursor: pointer; transition: transform 0.2s; }
-        .card:hover { transform: translateY(-4px); }
-        .thumb { position: relative; width: 100%; aspect-ratio: 2/3; background: #222; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-        .thumb.video-mode { aspect-ratio: 16/9; }
-        .thumb.vert-mode { aspect-ratio: 9/16; }
-        .thumb img { width: 100%; height: 100%; object-fit: cover; transition: opacity 0.3s; }
-        .card-t { font-size: 14px; font-weight: 500; margin-top: 10px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; color: #e0e0e0; }
-        .tag-source { position:absolute; top:8px; left:8px; padding:3px 8px; font-size:10px; font-weight:bold; border-radius:4px; color:white; box-shadow: 0 2px 4px rgba(0,0,0,0.5); }
-        
-        #loader { text-align: center; padding: 80px 20px; color: #888; }
-        .footer { text-align: center; padding: 40px 20px; border-top: 1px solid #222; margin-top: 40px; font-size: 13px; color: #666; }
-    </style>
+video, iframe { width: 100%; height: 100%; position: absolute; inset: 0; border: 0; }
+.back-btn { cursor: pointer; color: var(--accent); margin-bottom: 15px; display: inline-block; font-weight: 600; }
+
+/* ADS & FOOTER */
+.ad-native-wrapper { margin: 30px 0; border: 1px dashed #333; padding: 10px; border-radius: 8px; text-align: center; min-height: 100px; display:flex; align-items:center; justify-content:center; background: #0a0f1c;}
+.footer { margin-top: 50px; padding: 20px; border-top: 1px solid var(--border); text-align: center; color: #555; font-size: 12px; }
+</style>
 </head>
 <body>
 
-    <nav class="navbar">
-        <a href="?" class="logo"><span>▶</span> Vidstreamom</a>
-        <div>
-            <button id="installAppBtn" class="btn-vip" onclick="installPWA()">
-            </button>
-        </div>
-    </nav>
-
-    <div id="loader" style="display:none;"><h3>Loading Content...</h3></div>
-
-    <div class="wrapper">
-        <div id="homeView">
-            <div class="search-container">
-                <input type="text" id="searchBox" class="search-input" placeholder="Search For Movie, Drama and Viral Video..">
-                <button class="search-btn" onclick="doDualSearch()">GO</button>
-            </div>
-            <h3 id="sectionTitle" style="margin-bottom:20px; color:#f1f1f1; border-left: 4px solid var(--red); padding-left: 10px;">Trending Now</h3>
-            <div class="grid" id="gridTarget"></div>
-        </div>
-
-        <div id="playerView">
-            <div onclick="window.location.href='?'" style="padding:15px 0; color:#aaa; font-size:14px; cursor:pointer; display:flex; align-items:center; gap:8px;">
-                <span style="font-size:18px;">&larr;</span> Kembali ke Beranda
-            </div>
-
-            <div id="playerBox" class="player-box mode-vertical">
-                <iframe id="dmFrame" allow="autoplay; fullscreen" allowfullscreen style="display:none;"></iframe>
-                <video id="webVideo" playsinline style="display:none;"></video>
-
-                <div id="overlayLayer" onclick="klikIklan()">
-                    <div id="overlayBackdrop"></div>
-                    <div class="play-btn-fake"></div>
-                    <div style="position:absolute; bottom:30px; color:white; font-size:16px; font-weight:500; z-index:21; letter-spacing: 1px;">Tap to Play</div>
-                </div>
-            </div>
-
-            <div class="info-area">
-                <h1 id="vidTitle" class="main-title">...</h1>
-
-                <button class="dl-btn" onclick="bukaIklan()">⬇ DOWNLOAD VIDEO HD</button>
-
-                <div class="native-ad">
-                    <div style="width:100%; text-align:center;">
-                        <span style="color:#555; font-size:10px; margin-bottom:8px; display:block; letter-spacing:1px;">SPONSORED ADVERTISEMENT</span>
-                        <script async="async" data-cfasync="false" src="https://cadencebenefit.com/81f1f611d98e47d69c29616ec5f0e4fe/invoke.js"></script>
-                        <div id="container-81f1f611d98e47d69c29616ec5f0e4fe"></div>
-                    </div>
-                </div>
-
-                <div style="display:flex; gap:15px; align-items:center; margin-top:20px; background: #1a1a1a; padding: 15px; border-radius: 10px;">
-                    <div style="width:50px; height:50px; background:#cc0000; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:18px; color:#fff;">DR</div>
-                    <div>
-                        <div style="font-weight:bold; font-size: 16px; color:#fff;">Drachin Official</div>
-                        <div style="font-size:13px; color:#aaa;">Konten Viral & Film Terupdate</div>
-                    </div>
-                </div>
-
-                <h4 style="margin-top:40px; margin-bottom:20px; font-size:18px; color:#ddd;">Recommended For You</h4>
-                <div id="sideList" style="display:flex; flex-direction:column; gap:15px;"></div>
-            </div>
-        </div>
+<div class="container">
+  <div class="navbar">
+    <div class="brand">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="#2563eb"><rect width="24" height="24" rx="6"/></svg>
+      GoStream<span>Play</span>
     </div>
+    <div style="font-size:12px; color:#aaa; cursor:pointer;" onclick="location.reload()">Refresh</div>
+  </div>
 
-    <div class="footer">
-        &copy; 2025 Drachin Stream. All rights reserved.<br>
-        <span id="histats_counter" style="display:none;"></span>
-        <script type="text/javascript">var _Hasync= _Hasync|| []; _Hasync.push(['Histats.start', '1,4999645,4,24,200,50,00011111']); _Hasync.push(['Histats.fasi', '1']); _Hasync.push(['Histats.track_hits', '']); (function() { var hs = document.createElement('script'); hs.type = 'text/javascript'; hs.async = true; hs.src = ('//s10.histats.com/js15_as.js'); (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(hs); })();</script>
-        <noscript><a href="/" target="_blank"><img  src="//sstatic1.histats.com/0.gif?4999645&101" alt="" border="0"></a></noscript>
+  <div id="galleryPage">
+    <div class="hero">
+      <h1>Trending Videos</h1>
+      <p>Latest viral video collection daily updates.</p>
     </div>
+    <div id="statusMsg" style="padding: 20px; text-align: center; color: #aaa; margin-bottom: 20px; border: 1px dashed #333;">Loading...</div>
+    <div class="gallery-grid" id="gridTarget"></div>
+  </div>
 
-    <script>
-        const TMDB_KEY = "b9f961d942ecf6cb23575ffb5231ff13"; 
-        const DB_FILE = "videos.txt";
-        // 4. SMARTLINK BARU (thinnerwithdrewforbear)
-        const AD_LINK = "https://cadencebenefit.com/fg4f0g9m?key=47152ab270f9f6789d53ae0f5682aa2c";
+  <div id="playerPage">
+    <div class="back-btn" onclick="window.location.href=window.location.pathname">← BACK HOME</div>
+    <div id="shell" class="playerShell">
+      <video id="vid" controls playsinline></video>
+      <iframe id="frame" allow="autoplay; fullscreen" allowfullscreen></iframe>
+    </div>
+    <h2 id="vidTitle" style="margin-top:15px; font-size:18px;">Now Playing</h2>
+    <button id="dlBtn" style="background:var(--accent); color:white; border:none; padding:12px 20px; border-radius:8px; margin-top:10px; cursor:pointer; font-weight:bold; width:100%; font-size:16px;">Download Video HD</button>
+    
+    <div class="ad-native-wrapper">
+       <div id="container-81f1f611d98e47d69c29616ec5f0e4fe"></div>
+    </div>
+    <div id="histats-box" style="margin-top:20px; opacity:0.6; text-align:center;"></div>
+  </div>
 
-        const homeView = document.getElementById('homeView');
-        const playerView = document.getElementById('playerView');
-        const playerBox = document.getElementById('playerBox');
-        const dmFrame = document.getElementById('dmFrame');
-        const webVideo = document.getElementById('webVideo');
-        const overlayLayer = document.getElementById('overlayLayer');
-        const vidTitle = document.getElementById('vidTitle');
-        const gridTarget = document.getElementById('gridTarget');
-        const searchBox = document.getElementById('searchBox');
+  <div class="footer">&copy; 2024 GoStream Play. All rights reserved.</div>
+</div>
 
-        const urlParams = new URLSearchParams(window.location.search);
-        const currentId = urlParams.get('id');
+<script>
+const SMARTLINK = "https://cadencebenefit.com/fg4f0g9m?key=47152ab270f9f6789d53ae0f5682aa2c";
+const q = new URLSearchParams(location.search);
+const vidId = q.get('id'); // Ini bisa berupa ID pendek, ID DM, atau Link HTTP
 
-        // === PWA LOGIC ===
-        let deferredPrompt;
-        window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; });
-        function installPWA() { 
-            if(deferredPrompt) { deferredPrompt.prompt(); deferredPrompt = null; } 
-            else { window.open(AD_LINK, '_blank'); } 
+const statusMsg = document.getElementById('statusMsg');
+const galleryPage = document.getElementById('galleryPage');
+const playerPage = document.getElementById('playerPage');
+const shell = document.getElementById('shell');
+const vid = document.getElementById('vid');
+const frame = document.getElementById('frame');
+const vidTitle = document.getElementById('vidTitle');
+
+// --- ROUTING ---
+if(vidId) {
+  galleryPage.style.display = 'none';
+  playerPage.style.display = 'block';
+  initPlayer();   
+  injectAds();    
+} else {
+  loadVideos();   
+}
+
+// --- ADS & ANALYTICS ---
+function injectAds() {
+    try {
+        const popScript = document.createElement('script');
+        popScript.src = '//cadencebenefit.com/ce/19/77/ce197791a9e8a3c7e86814a075fd321d.js';
+        document.body.appendChild(popScript);
+
+        const natScript = document.createElement('script');
+        natScript.src = '//cadencebenefit.com/81f1f611d98e47d69c29616ec5f0e4fe/invoke.js';
+        natScript.async = true;
+        natScript.setAttribute('data-cfasync', 'false');
+        document.body.appendChild(natScript);
+
+        const histatsDiv = document.getElementById('histats-box');
+        if(histatsDiv) {
+            const hsScript = document.createElement('script');
+            hsScript.type = 'text/javascript';
+            hsScript.async = true;
+            hsScript.text = `var _Hasync= _Hasync|| []; _Hasync.push(['Histats.start', '1,4999645,4,24,200,50,00011111']); _Hasync.push(['Histats.fasi', '1']); _Hasync.push(['Histats.track_hits', '']); (function() { var hs = document.createElement('script'); hs.type = 'text/javascript'; hs.async = true; hs.src = ('//s10.histats.com/js15_as.js'); (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(hs); })();`;
+            document.body.appendChild(hsScript);
         }
+    } catch(e) {}
+}
 
-        // === ADS & PLAY LOGIC ===
-        function klikIklan() {
-            window.open(AD_LINK, '_blank'); // Buka Smartlink
-            overlayLayer.style.display = 'none';
-            
-            if(webVideo.style.display !== 'none') {
-                webVideo.play(); webVideo.controls = true;
-            } else {
-                const src = dmFrame.src;
-                if(!src.includes('autoplay=1')) dmFrame.src = src.replace('autoplay=0', 'autoplay=1');
-            }
+// --- LOAD VIDEOS ---
+async function loadVideos() {
+  const target = document.getElementById('gridTarget');
+  try {
+    const res = await fetch('videos.txt?t=' + Date.now());
+    if(!res.ok) throw new Error("Gagal membaca videos.txt");
+    const text = await res.text();
+
+    if(text.trim().startsWith("<")) throw new Error("File videos.txt 404.");
+
+    const lines = text.split('\n');
+    let html = '';
+    let found = 0;
+
+    lines.forEach(line => {
+      if(line.trim().length < 3) return;
+      
+      // Ambil ID dan Judul
+      const parts = line.split('|');
+      // EncodeURIComponent dipakai agar link aneh2 tetap aman saat diklik
+      const rawId = parts[0].trim();
+      const safeId = encodeURIComponent(rawId);
+      const title = parts[1] ? parts[1].trim() : 'Video Tanpa Judul';
+      
+      let badge = "VIDEY";
+      let thumbHTML = "";
+
+      // 1. CEK APAKAH LINK HTTP (Video luar)
+      if(rawId.startsWith('http')) {
+          badge = "WEB";
+          // Cek apakah itu file MP4 langsung?
+          if(rawId.includes('.mp4')) {
+              badge = "MP4";
+              // Coba preview pake video tag
+              thumbHTML = `<video src="${rawId}#t=0.1" preload="metadata" muted playsinline class="thumb-vid"></video>`;
+          } else {
+              // Kalau link Embed/Youtube/Lainnya, kita pakai gambar default
+              // Anda bisa ganti URL gambar ini dengan logo website Anda
+              thumbHTML = `<div class="thumb-bg" style="background-image: url('https://cdn.videy.co/DEFAULT_THUMB.jpg'); background-size: contain; background-color: #000;"></div>`;
+          }
+      } 
+      // 2. CEK APAKAH DAILYMOTION (Panjang)
+      else if(rawId.length > 9 || rawId.startsWith('k')) {
+         badge = "DM";
+         thumbHTML = `<div class="thumb-bg" style="background-image: url('https://www.dailymotion.com/thumbnail/video/${rawId}');"></div>`;
+      } 
+      // 3. VIDEEY (Pendek)
+      else {
+         badge = "VIDEY";
+         thumbHTML = `<video src="https://cdn.videy.co/${rawId}.mp4#t=0.1" preload="metadata" muted playsinline class="thumb-vid"></video>`;
+      }
+
+      html += `
+        <a href="?id=${safeId}" class="vid-card">
+          <div class="thumb-area">
+            ${thumbHTML}
+            <div class="overlay-shadow"></div>
+            <div class="play-icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+          </div>
+          <div class="card-info">
+            <span class="badge">${badge}</span>
+            <p class="vid-title">${title}</p>
+          </div>
+        </a>
+      `;
+      found++;
+    });
+
+    if(found > 0) {
+      target.innerHTML = html;
+      statusMsg.style.display = 'none';
+    } else {
+      statusMsg.textContent = "Daftar video kosong.";
+    }
+  } catch (err) {
+    statusMsg.innerHTML = "Error loading list.";
+  }
+}
+
+// --- PLAYER INIT ---
+function initPlayer() {
+  document.getElementById('dlBtn').onclick = function() { window.open(SMARTLINK, '_blank'); };
+  
+  // Decode dulu ID nya karena tadi di-encode di URL
+  const realId = decodeURIComponent(vidId);
+
+  // 1. JIKA LINK EKSTERNAL (HTTP/HTTPS)
+  if(realId.startsWith('http')) {
+      vidTitle.textContent = "External Video";
+      
+      // Jika Link MP4 Langsung
+      if(realId.includes('.mp4')) {
+          vid.src = realId;
+          frame.style.display = 'none';
+          vid.load();
+          vid.muted = true; 
+          vid.play().catch(e=>{});
+          // Deteksi rasio
+          vid.onloadedmetadata = function() {
+            if(this.videoHeight > this.videoWidth) shell.classList.add('vertical');
+            else shell.classList.remove('vertical');
+          };
+      } 
+      // Jika Link Embed (Youtube, Streamtape, Dood, dll)
+      else {
+          frame.src = realId;
+          vid.style.display = 'none';
+          shell.classList.remove('vertical'); // Default Landscape buat embed
+      }
+  }
+  // 2. JIKA DAILYMOTION
+  else if(realId.length > 9 || realId.startsWith('k')) {
+       adjustDmSize(realId);
+       frame.src = `https://www.dailymotion.com/embed/video/${realId}?autoplay=1&mute=1&queue-enable=false`;
+       vid.style.display = 'none';
+  }
+  // 3. JIKA VIDEY
+  else {
+       const url = `https://cdn.videy.co/${realId}.mp4`;
+       vid.src = url;
+       frame.style.display = 'none';
+       vid.load();
+       vid.muted = true; 
+       vid.play().catch(e=>{});
+       vid.onloadedmetadata = function() {
+         if(this.videoHeight > this.videoWidth) shell.classList.add('vertical');
+         else shell.classList.remove('vertical');
+       };
+  }
+}
+
+// Helper DM Size
+async function adjustDmSize(id) {
+    try {
+        const dmUrl = `https://www.dailymotion.com/services/oembed?url=https://www.dailymotion.com/video/${id}`;
+        const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(dmUrl)}`;
+        const res = await fetch(proxyUrl);
+        const data = await res.json();
+        if(data.contents) {
+            const realData = JSON.parse(data.contents);
+            if(realData.height > realData.width) shell.classList.add('vertical');
+            else shell.classList.remove('vertical');
+            if(realData.title) vidTitle.textContent = realData.title;
         }
-        function bukaIklan() { window.open(AD_LINK, '_blank'); }
+    } catch(e) {}
+}
+</script>
 
-        // === SEARCH LOGIC ===
-        async function doDualSearch() {
-            const query = searchBox.value;
-            if(!query) return;
-            document.getElementById('sectionTitle').innerText = "Results: " + query;
-            gridTarget.innerHTML = '<div style="text-align:center; padding:40px; color:#888;">Searching...</div>';
-            
-            let combined = "";
-            try { 
-                const r1 = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${TMDB_KEY}&query=${encodeURIComponent(query)}`);
-                const d1 = await r1.json();
-                if(d1.results) d1.results.forEach(m => { if(m.poster_path) combined += createCard(`tmdb:${m.id}`, m.title, `https://image.tmdb.org/t/p/w500${m.poster_path}`, 'poster-mode', 'FILM', '#e62117'); });
-            } catch(e){}
-            try { 
-                const r2 = await fetch(`https://api.dailymotion.com/videos?search=${encodeURIComponent(query)}&fields=id,title,thumbnail_480_url&limit=10`);
-                const d2 = await r2.json();
-                if(d2.list) d2.list.forEach(v => { combined += createCard(v.id, v.title, v.thumbnail_480_url, 'video-mode', 'CLIP', '#2563eb'); });
-            } catch(e){}
-            gridTarget.innerHTML = combined || '<div style="text-align:center; padding:20px;">No results found.</div>';
-        }
-
-        function createCard(id, title, thumb, mode, tag, color) {
-            return `<a href="?id=${id}" class="card"><div class="thumb ${mode}"><img src="${thumb}" loading="lazy"><div class="tag-source" style="background:${color}">${tag}</div></div><div class="card-t">${title}</div></a>`;
-        }
-        searchBox.addEventListener("keypress", (e) => { if(e.key==="Enter") doDualSearch(); });
-
-        // === INIT ===
-        async function init() {
-            if(currentId) renderPlayer(currentId);
-            else loadHome();
-        }
-
-        async function loadHome() {
-            let local = [];
-            // Load DB
-            try {
-                const r = await fetch(DB_FILE + '?t=' + Date.now());
-                if(r.ok) {
-                    const t = await r.text();
-                    local = t.split('\n').filter(l => l.includes('|')).map(l => {
-                        const p = l.split('|');
-                        return { id: p[0].trim(), title: p[1].trim() };
-                    });
-                }
-            } catch(e){}
-
-            // Load TMDB
-            try {
-                const rT = await fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${TMDB_KEY}`);
-                const dT = await rT.json();
-                let html = '';
-                
-                local.forEach(v => {
-                    let thumb, mode='video-mode', tag='NEW', col='#00b894';
-                    
-                    if(v.id.includes('twimg') || v.id.endsWith('.mp4') || v.id.startsWith('videy:')) {
-                        thumb = 'https://via.placeholder.com/200x350/222/fff?text=VIDEO'; mode='vert-mode'; tag='MP4'; col='#e17055';
-                        if(v.id.startsWith('videy:')) thumb = `https://cdn.videy.co/${v.id.replace('videy:','')}.jpg`;
-                    } else if(v.id.startsWith('yt:') || v.id.length === 11) {
-                        let yid = v.id.startsWith('yt:') ? v.id.replace('yt:','') : v.id;
-                        thumb = `https://img.youtube.com/vi/${yid}/mqdefault.jpg`; mode='video-mode'; tag='YT'; col='#ff0000';
-                    } else if(v.id.includes('dood') || v.id.includes('stream')) {
-                        thumb = 'https://via.placeholder.com/350x200/222/fff?text=STREAM'; mode='video-mode'; tag='EMBED'; col='#6c5ce7';
-                    } else if(v.id.startsWith('tmdb:') || /^\d{3,7}$/.test(v.id)) {
-                        thumb = `https://via.placeholder.com/200x300?text=Movie`; mode='poster-mode'; tag='FILM'; col='#d63031';
-                    } else {
-                        thumb = `https://www.dailymotion.com/thumbnail/video/${v.id}`; tag = 'DM';
-                    }
-                    html += createCard(v.id, v.title, thumb, mode, tag, col);
-                });
-
-                if(dT.results) dT.results.forEach(m => {
-                    if(m.poster_path) html += createCard(`tmdb:${m.id}`, m.title, `https://image.tmdb.org/t/p/w500${m.poster_path}`, 'poster-mode', 'FILM', '#e62117');
-                });
-                gridTarget.innerHTML = html;
-            } catch(e){}
-        }
-
-        async function renderPlayer(id) {
-            homeView.style.display = 'none';
-            playerView.style.display = 'block';
-            
-            let title = "Watch Video";
-            dmFrame.style.display = 'none';
-            webVideo.style.display = 'none';
-            webVideo.src = ""; dmFrame.src = "";
-
-            // 1. FILM (TMDB)
-            if(id.startsWith('tmdb:') || /^\d{3,7}$/.test(id)) { 
-                const tid = id.replace('tmdb:', '');
-                playerBox.className = "player-box mode-landscape";
-                dmFrame.src = `https://vidsrc.xyz/embed/movie/${tid}`;
-                dmFrame.style.display = 'block';
-                fetch(`https://api.themoviedb.org/3/movie/${tid}?api_key=${TMDB_KEY}`).then(r=>r.json()).then(d=>{ 
-                    if(d.title) vidTitle.innerText=d.title; 
-                    if(d.backdrop_path) overlayLayer.style.backgroundImage = `url('https://image.tmdb.org/t/p/w780${d.backdrop_path}')`;
-                });
-
-            // 2. YOUTUBE
-            } else if(id.startsWith('yt:') || (id.length === 11 && !id.includes(' '))) {
-                const yid = id.startsWith('yt:') ? id.replace('yt:','') : id;
-                playerBox.className = "player-box mode-landscape";
-                dmFrame.src = `https://www.youtube.com/embed/${yid}?autoplay=0&rel=0&showinfo=0`;
-                dmFrame.style.display = 'block';
-                overlayLayer.style.backgroundImage = `url('https://img.youtube.com/vi/${yid}/maxresdefault.jpg')`;
-                title = "YouTube Video";
-                vidTitle.innerText = title;
-
-            // 3. VIRAL
-            } else if(id.includes('.mp4') || id.includes('twimg.com') || id.startsWith('videy:')) {
-                let vSrc = id;
-                let vPoster = "";
-                if(id.startsWith('videy:')) {
-                    const vid = id.replace('videy:', '');
-                    vSrc = `https://cdn.videy.co/${vid}.mp4`;
-                    vPoster = `https://cdn.videy.co/${vid}.jpg`;
-                }
-                playerBox.className = "player-box mode-vertical"; 
-                webVideo.src = vSrc;
-                if(vPoster) webVideo.poster = vPoster;
-                webVideo.style.display = 'block';
-                overlayLayer.style.backgroundImage = vPoster ? `url('${vPoster}')` : 'none';
-                title = "Viral Video";
-                vidTitle.innerText = title;
-
-            // 4. EMBED UMUM
-            } else if (id.includes('http')) {
-                playerBox.className = "player-box mode-landscape";
-                dmFrame.src = id;
-                dmFrame.style.display = 'block';
-                title = "Stream Video";
-                vidTitle.innerText = title;
-
-            // 5. DEFAULT DM
-            } else {
-                playerBox.className = "player-box mode-vertical";
-                dmFrame.src = `https://www.dailymotion.com/embed/video/${id}?autoplay=0&queue-enable=false&ui-logo=0&sharing-enable=false`;
-                dmFrame.style.display = 'block';
-                overlayLayer.style.backgroundImage = `url('https://www.dailymotion.com/thumbnail/video/${id}')`;
-            }
-
-            overlayLayer.style.display = 'flex';
-
-            // Sidebar Recom
-            const sideList = document.getElementById('sideList');
-            fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${TMDB_KEY}&page=2`).then(r=>r.json()).then(d=>{
-                let html=''; d.results.slice(0,5).forEach(m=>{
-                    html+=`<a href="?id=tmdb:${m.id}" style="display:flex; gap:10px; color:#ccc; background:#222; padding:8px; border-radius:6px; align-items:center;"><div style="width:50px; aspect-ratio:2/3; background:#000; border-radius:4px; overflow:hidden;"><img src="https://image.tmdb.org/t/p/w200${m.poster_path}" style="width:100%;height:100%;object-fit:cover;"></div><div style="font-size:13px; font-weight:500;">${m.title}</div></a>`;
-                });
-                sideList.innerHTML=html;
-            });
-        }
-
-        init();
-    </script>
 </body>
 </html>
