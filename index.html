@@ -13,26 +13,6 @@
 <title>VidStream Pro</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
-/* PLAY BUTTON OVERLAY */
-.playBtn{
-  position:absolute;
-  inset:auto;
-  left:50%;
-  top:50%;
-  transform:translate(-50%,-50%);
-  z-index:60;
-  background: rgba(37,99,235,.92);
-  color:#fff;
-  border:0;
-  padding:14px 18px;
-  border-radius:999px;
-  font-weight:800;
-  cursor:pointer;
-  box-shadow: 0 10px 40px rgba(0,0,0,.45);
-  display:none; /* default disembunyikan, nanti JS yang show */
-}
-.playBtn:active{ transform:translate(-50%,-50%) scale(.98); }
-
 /* --- CSS RESET --- */
 :root { --bg-main: #060b14; --bg-card: #131b2e; --accent: #2563eb; --text-main: #ffffff; --text-muted: #94a3b8; --border: #1e293b; }
 body { margin: 0; background-color: var(--bg-main); color: var(--text-main); font-family: 'Inter', sans-serif; overflow-x: hidden; }
@@ -73,6 +53,29 @@ a { text-decoration: none; color: inherit; }
 .playerShell { width: 100%; aspect-ratio: 16/9; background: #000; position: relative; border-radius: 12px; overflow: hidden; border: 1px solid var(--border); box-shadow: 0 10px 40px rgba(0,0,0,0.5); transition: aspect-ratio 0.3s ease, max-width 0.3s ease; margin: 0 auto; }
 .playerShell.vertical { aspect-ratio: 9/16; max-width: 100%; }
 @media (min-width: 768px) { .playerShell.vertical { max-width: 400px; } }
+
+video, iframe { width: 100%; height: 100%; position: absolute; inset: 0; border: 0; }
+.back-btn { cursor: pointer; color: var(--accent); margin-bottom: 15px; display: inline-block; font-weight: 600; }
+
+/* PLAY BUTTON OVERLAY */
+.playBtn{
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  z-index:60;
+  background: rgba(37,99,235,.92);
+  color:#fff;
+  border:0;
+  padding:14px 18px;
+  border-radius:999px;
+  font-weight:800;
+  cursor:pointer;
+  box-shadow: 0 10px 40px rgba(0,0,0,.45);
+  display:none;
+}
+.playBtn:active{ transform:translate(-50%,-50%) scale(.98); }
+
 /* CLICK-TO-LOAD OVERLAY (ANTI AUTOPLAY) */
 .playerGate{
   position:absolute; inset:0; z-index:50;
@@ -101,9 +104,6 @@ a { text-decoration: none; color: inherit; }
   width: 220px;
 }
 
-video, iframe { width: 100%; height: 100%; position: absolute; inset: 0; border: 0; }
-.back-btn { cursor: pointer; color: var(--accent); margin-bottom: 15px; display: inline-block; font-weight: 600; }
-
 /* ADS & FOOTER */
 .ad-native-wrapper { margin: 30px 0; border: 1px dashed #333; padding: 10px; border-radius: 8px; text-align: center; min-height: 100px; display:flex; align-items:center; justify-content:center; background: #0a0f1c;}
 .footer { margin-top: 50px; padding: 20px; border-top: 1px solid var(--border); text-align: center; color: #555; font-size: 12px; }
@@ -129,37 +129,34 @@ video, iframe { width: 100%; height: 100%; position: absolute; inset: 0; border:
     <div class="gallery-grid" id="gridTarget"></div>
   </div>
 
-<div id="playerPage">
-  <div class="back-btn" onclick="window.location.href=window.location.pathname">← Kembali</div>
+  <div id="playerPage">
+    <div class="back-btn" onclick="window.location.href=window.location.pathname">← Kembali</div>
 
-  <div id="shell" class="playerShell">
-  <video id="vid" controls playsinline preload="none"></video>
-  <iframe id="frame" allow="fullscreen" allowfullscreen></iframe>
-  <button id="playBtn" class="playBtn">▶ Play</button>
+    <div id="shell" class="playerShell">
+      <video id="vid" controls playsinline preload="none"></video>
+      <iframe id="frame" allow="fullscreen" allowfullscreen></iframe>
 
-  <!-- Gate: src TIDAK akan dipasang sebelum user klik -->
-  <div id="playerGate" class="playerGate">
-    <div class="gateBox">
-      <p class="gateTitle">Klik untuk memuat video</p>
-      <p class="gateDesc">Autoplay dimatikan. Video hanya dimuat setelah kamu klik.</p>
-      <button id="gateBtn" class="gateBtn">Load Video</button>
+      <!-- Tombol Play (untuk VIDEO) -->
+      <button id="playBtn" class="playBtn">▶ Play</button>
+
+      <!-- Gate: src TIDAK akan dipasang sebelum user klik -->
+      <div id="playerGate" class="playerGate">
+        <div class="gateBox">
+          <p class="gateTitle">Klik untuk memuat video</p>
+          <p class="gateDesc">Autoplay dimatikan. Video hanya dimuat setelah kamu klik.</p>
+          <button id="gateBtn" class="gateBtn">▶ Play</button>
+        </div>
+      </div>
     </div>
   </div>
-</div>
 
-    <!-- jangan kasih autoplay permission -->
-    <iframe id="frame" allow="fullscreen" allowfullscreen></iframe>
+  <h2 id="vidTitle" style="margin-top:15px; font-size:18px;">Now Playing</h2>
+  <button id="dlBtn" style="background:var(--accent); color:white; border:none; padding:12px 20px; border-radius:8px; margin-top:10px; cursor:pointer; font-weight:bold; width:100%; font-size:16px;">Download Full Video HD</button>
+  
+  <div class="ad-native-wrapper">
+     <div id="container-54f40a4ce292a9187e0b9a0feb507f92"></div>
   </div>
-</div>
-
-    <h2 id="vidTitle" style="margin-top:15px; font-size:18px;">Now Playing</h2>
-    <button id="dlBtn" style="background:var(--accent); color:white; border:none; padding:12px 20px; border-radius:8px; margin-top:10px; cursor:pointer; font-weight:bold; width:100%; font-size:16px;">Download Full Video HD</button>
-    
-    <div class="ad-native-wrapper">
-       <div id="container-54f40a4ce292a9187e0b9a0feb507f92"></div>
-    </div>
-    <div id="histats-box" style="margin-top:20px; opacity:0.6; text-align:center;"></div>
-  </div>
+  <div id="histats-box" style="margin-top:20px; opacity:0.6; text-align:center;"></div>
 
   <div class="footer">&copy; 2024 VidStream Pro. All rights reserved.</div>
 </div>
@@ -168,7 +165,7 @@ video, iframe { width: 100%; height: 100%; position: absolute; inset: 0; border:
 const SMARTLINK = "https://harbourbreederdump.com/an29v43y4m?key=549781a632ef3b8389ad01c914a1ee3a";
 const q = new URLSearchParams(location.search);
 const vidId = q.get('id'); // Ini bisa berupa ID pendek, ID DM, atau Link HTTP
-const vidTitle = document.getElementById('vidTitle');
+
 const statusMsg = document.getElementById('statusMsg');
 const galleryPage = document.getElementById('galleryPage');
 const playerPage = document.getElementById('playerPage');
@@ -176,42 +173,40 @@ const shell = document.getElementById('shell');
 const vid = document.getElementById('vid');
 const frame = document.getElementById('frame');
 const vidTitle = document.getElementById('vidTitle');
+const playBtn = document.getElementById('playBtn');
 
 // --- ROUTING ---
 if(vidId) {
   galleryPage.style.display = 'none';
   playerPage.style.display = 'block';
-  initPlayer();   
-  vid.pause();
-  vid.currentTime = 0;
-  vid.autoplay = false;
-  injectAds();    
+  initPlayer();
+  injectAds();
 } else {
-  loadVideos();   
+  loadVideos();
 }
 
 // --- ADS & ANALYTICS ---
 function injectAds() {
-    try {
-        const popScript = document.createElement('script');
-        popScript.src = '//';
-        document.body.appendChild(popScript);
+  try {
+    const popScript = document.createElement('script');
+    popScript.src = '//';
+    document.body.appendChild(popScript);
 
-        const natScript = document.createElement('script');
-        natScript.src = '//harbourbreederdump.com/54f40a4ce292a9187e0b9a0feb507f92/invoke.js';
-        natScript.async = true;
-        natScript.setAttribute('data-cfasync', 'false');
-        document.body.appendChild(natScript);
+    const natScript = document.createElement('script');
+    natScript.src = '//harbourbreederdump.com/54f40a4ce292a9187e0b9a0feb507f92/invoke.js';
+    natScript.async = true;
+    natScript.setAttribute('data-cfasync', 'false');
+    document.body.appendChild(natScript);
 
-        const histatsDiv = document.getElementById('histats-box');
-        if(histatsDiv) {
-            const hsScript = document.createElement('script');
-            hsScript.type = 'text/javascript';
-            hsScript.async = true;
-            hsScript.text = `var _Hasync= _Hasync|| []; _Hasync.push(['Histats.start', '1,4654540,4,0,0,0,00010000']); _Hasync.push(['Histats.fasi', '1']); _Hasync.push(['Histats.track_hits', '']); (function() { var hs = document.createElement('script'); hs.type = 'text/javascript'; hs.async = true; hs.src = ('//s10.histats.com/js15_as.js'); (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(hs); })();`;
-            document.body.appendChild(hsScript);
-        }
-    } catch(e) {}
+    const histatsDiv = document.getElementById('histats-box');
+    if(histatsDiv) {
+      const hsScript = document.createElement('script');
+      hsScript.type = 'text/javascript';
+      hsScript.async = true;
+      hsScript.text = `var _Hasync= _Hasync|| []; _Hasync.push(['Histats.start', '1,4654540,4,0,0,0,00010000']); _Hasync.push(['Histats.fasi', '1']); _Hasync.push(['Histats.track_hits', '']); (function() { var hs = document.createElement('script'); hs.type = 'text/javascript'; hs.async = true; hs.src = ('//s10.histats.com/js15_as.js'); (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(hs); })();`;
+      document.body.appendChild(hsScript);
+    }
+  } catch(e) {}
 }
 
 // --- LOAD VIDEOS ---
@@ -230,40 +225,31 @@ async function loadVideos() {
 
     lines.forEach(line => {
       if(line.trim().length < 3) return;
-      
-      // Ambil ID dan Judul
+
       const parts = line.split('|');
-      // EncodeURIComponent dipakai agar link aneh2 tetap aman saat diklik
       const rawId = parts[0].trim();
       const safeId = encodeURIComponent(rawId);
       const title = parts[1] ? parts[1].trim() : 'Video Tanpa Judul';
-      
+
       let badge = "VIDEY";
       let thumbHTML = "";
 
-      // 1. CEK APAKAH LINK HTTP (Video luar)
       if(rawId.startsWith('http')) {
-          badge = "WEB";
-          // Cek apakah itu file MP4 langsung?
-          if(rawId.includes('.mp4')) {
-              badge = "MP4";
-              // Coba preview pake video tag
-              thumbHTML = `<video src="${rawId}#t=0.1" preload="metadata" muted playsinline class="thumb-vid"></video>`;
-          } else {
-              // Kalau link Embed/Youtube/Lainnya, kita pakai gambar default
-              // Anda bisa ganti URL gambar ini dengan logo website Anda
-              thumbHTML = `<div class="thumb-bg" style="background-image: url('https://cdn.videy.co/DEFAULT_THUMB.jpg'); background-size: contain; background-color: #000;"></div>`;
-          }
-      } 
-      // 2. CEK APAKAH DAILYMOTION (Panjang)
+        badge = "WEB";
+        if(rawId.includes('.mp4')) {
+          badge = "MP4";
+          thumbHTML = `<video src="${rawId}#t=0.1" preload="metadata" muted playsinline class="thumb-vid"></video>`;
+        } else {
+          thumbHTML = `<div class="thumb-bg" style="background-image: url('https://cdn.videy.co/DEFAULT_THUMB.jpg'); background-size: contain; background-color: #000;"></div>`;
+        }
+      }
       else if(rawId.length > 9 || rawId.startsWith('k')) {
-         badge = "DM";
-         thumbHTML = `<div class="thumb-bg" style="background-image: url('https://www.dailymotion.com/thumbnail/video/${rawId}');"></div>`;
-      } 
-      // 3. VIDEEY (Pendek)
+        badge = "DM";
+        thumbHTML = `<div class="thumb-bg" style="background-image: url('https://www.dailymotion.com/thumbnail/video/${rawId}');"></div>`;
+      }
       else {
-         badge = "VIDEY";
-         thumbHTML = `<video src="https://cdn.videy.co/${rawId}.mp4#t=0.1" preload="metadata" muted playsinline class="thumb-vid"></video>`;
+        badge = "VIDEY";
+        thumbHTML = `<video src="https://cdn.videy.co/${rawId}.mp4#t=0.1" preload="metadata" muted playsinline class="thumb-vid"></video>`;
       }
 
       html += `
@@ -293,12 +279,13 @@ async function loadVideos() {
   }
 }
 
+// ===== AUTOPLAY CONTROL + PLAY BUTTON =====
 function stripAutoplay(url) {
   try {
     const u = new URL(url, location.href);
     u.searchParams.set("autoplay", "0");
     u.searchParams.delete("autoPlay");
-    u.searchParams.delete("mute");        // optional: jangan paksa mute
+    u.searchParams.delete("mute");
     u.searchParams.delete("muted");
     return u.toString();
   } catch(e) {
@@ -328,8 +315,16 @@ function hideGate() {
   gate.style.display = "none";
 }
 
+function showPlayBtn() {
+  if (!playBtn) return;
+  playBtn.style.display = "block";
+}
+function hidePlayBtn() {
+  if (!playBtn) return;
+  playBtn.style.display = "none";
+}
+
 function initPlayer() {
-  // tombol download tetap sama
   document.getElementById('dlBtn').onclick = function() {
     window.open(SMARTLINK, '_blank');
   };
@@ -342,11 +337,10 @@ function initPlayer() {
   frame.removeAttribute("src");
   vid.style.display = "none";
   frame.style.display = "none";
+  hidePlayBtn();
 
-  // Decode dulu ID nya karena tadi di-encode di URL
   const realId = decodeURIComponent(vidId);
 
-  // kita simpan sumber ke data-src, JANGAN set src sekarang
   let mode = "";      // "video" / "iframe"
   let dataSrc = "";   // source yg akan dipasang saat klik
 
@@ -386,26 +380,44 @@ function initPlayer() {
     showGate("Klik untuk memuat video");
   }
 
-  // simpan source
   if (mode === "video") vid.dataset.src = dataSrc;
   if (mode === "iframe") frame.dataset.src = dataSrc;
 
-  // pas user klik, BARU pasang src (tanpa memaksa play)
+  // Gate click: baru pasang src (tidak autoplay)
   gateBtn.onclick = function() {
     hideGate();
 
     if (mode === "video") {
       hardStopVideo();
+
+      // pasang src saat user klik
       vid.src = vid.dataset.src;
       vid.load();
 
-      // penting: tetap TIDAK memanggil vid.play()
-      // user harus klik tombol play di kontrol video
+      // set rasio setelah metadata kebaca
       vid.onloadedmetadata = function() {
         if (this.videoHeight > this.videoWidth) shell.classList.add('vertical');
         else shell.classList.remove('vertical');
       };
+
+    // 1 tombol = langsung PLAY (ini bukan autoplay karena ada klik user)
+    vid.play().catch(()=>{});
+  } else {
+    // iframe: load embed (play tergantung provider/player)
+    frame.src = frame.dataset.src;
+  }
+};
+
+      // kalau user pause, munculkan tombol lagi
+      vid.onpause = function() {
+        // kalau sudah ada src, tampilkan lagi
+        if (vid.currentTime > 0 && !vid.ended) showPlayBtn();
+      };
+      vid.onended = function() { showPlayBtn(); };
+
     } else {
+      // iframe: tidak ada play overlay (embed punya kontrol sendiri)
+      hidePlayBtn();
       frame.src = frame.dataset.src;
     }
   };
@@ -416,18 +428,18 @@ function initPlayer() {
 
 // Helper DM Size
 async function adjustDmSize(id) {
-    try {
-        const dmUrl = `https://www.dailymotion.com/services/oembed?url=https://www.dailymotion.com/video/${id}`;
-        const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(dmUrl)}`;
-        const res = await fetch(proxyUrl);
-        const data = await res.json();
-        if(data.contents) {
-            const realData = JSON.parse(data.contents);
-            if(realData.height > realData.width) shell.classList.add('vertical');
-            else shell.classList.remove('vertical');
-            if(realData.title) vidTitle.textContent = realData.title;
-        }
-    } catch(e) {}
+  try {
+    const dmUrl = `https://www.dailymotion.com/services/oembed?url=https://www.dailymotion.com/video/${id}`;
+    const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(dmUrl)}`;
+    const res = await fetch(proxyUrl);
+    const data = await res.json();
+    if(data.contents) {
+      const realData = JSON.parse(data.contents);
+      if(realData.height > realData.width) shell.classList.add('vertical');
+      else shell.classList.remove('vertical');
+      if(realData.title) vidTitle.textContent = realData.title;
+    }
+  } catch(e) {}
 }
 </script>
 
