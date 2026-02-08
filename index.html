@@ -135,6 +135,7 @@ video, iframe { width: 100%; height: 100%; position: absolute; inset: 0; border:
   <div id="shell" class="playerShell">
   <video id="vid" controls playsinline preload="none"></video>
   <iframe id="frame" allow="fullscreen" allowfullscreen></iframe>
+  <button id="playBtn" class="playBtn">▶ Play</button>
 
   <!-- Gate: src TIDAK akan dipasang sebelum user klik -->
   <div id="playerGate" class="playerGate">
@@ -167,7 +168,7 @@ video, iframe { width: 100%; height: 100%; position: absolute; inset: 0; border:
 const SMARTLINK = "https://harbourbreederdump.com/an29v43y4m?key=549781a632ef3b8389ad01c914a1ee3a";
 const q = new URLSearchParams(location.search);
 const vidId = q.get('id'); // Ini bisa berupa ID pendek, ID DM, atau Link HTTP
-
+const vidTitle = document.getElementById('vidTitle');
 const statusMsg = document.getElementById('statusMsg');
 const galleryPage = document.getElementById('galleryPage');
 const playerPage = document.getElementById('playerPage');
